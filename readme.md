@@ -1,0 +1,1 @@
+# rps is school model (rock, paper, scissors)
