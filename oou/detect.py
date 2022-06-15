@@ -37,11 +37,11 @@ while (True):
   #print(prediction)
 
   if np.argmax(prediction) == 0:
-    predict = "It is a bread!"
+    predict = "orange"
   elif np.argmax(prediction) == 1:
-    predict = "It is a lemon!"
+    predict = "onion"
   else:
-    predict = "It is a other!"
+    predict = "unknown"
 
   cv2.putText(
     original, predict, (10, 30),
