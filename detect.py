@@ -1,12 +1,8 @@
+import cv2, sys
 from PIL import Image, ImageOps
+from pathlib import Path
 import tensorflow as tf
-import cv2
 import numpy as np
-import os
-import sys
-
-label = ''
-frame = None
 
 def import_and_predict(image_data, model):
   size = (100, 100)
@@ -17,9 +13,12 @@ def import_and_predict(image_data, model):
   img_reshape = image[np.newaxis, ...]
   prediction = model.predict(img_reshape)
   return prediction
-model = tf.keras.models.load_model('model.hdf5')
-cap = cv2.VideoCapture(0)
 
+label = ''
+frame = None
+model = tf.keras.models.load_model('model.hdf5')
+
+cap = cv2.VideoCapture(0)
 if (cap.isOpened()):
   print("Camera OK")
 else:
@@ -28,23 +27,28 @@ else:
 while (True):
   ret, original = cap.read()
   frame = cv2.resize(original, (224, 224))
-  cv2.imwrite(filename='img.jpg', img=original)
+  cv2.imwrite(filename = 'img.jpg', img = original)
   image = Image.open('img.jpg')
-
-  # Display the predictions
-  # print("ImageNet ID: {}, Label: {}".format(inID, label))
   prediction = import_and_predict(image, model)
-  #print(prediction)
-
+  
   if np.argmax(prediction) == 0:
-    predict = "orange"
-  elif np.argmax(prediction) == 1:
     predict = "onion"
+  elif np.argmax(prediction) == 1:
+    predict = "orange"
   else:
+    with open('data/unknown_count.txt', 'r') as file:
+      count = file.read()
+    Path("img.jpg").rename("data/unknown/" + count + ".jpg")
+    test = int(count) + 1
+    with open('data/unknown_count.txt', 'w') as file:
+      file.write(str(test))
     predict = "unknown"
-
+  testing = str(prediction)
   cv2.putText(
     original, predict, (10, 30),
+    cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+  cv2.putText(
+    original, testing, (10, 60),
     cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
   cv2.imshow("Classification", original)
 
