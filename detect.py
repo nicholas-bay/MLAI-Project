@@ -30,27 +30,25 @@ while (True):
   cv2.imwrite(filename = 'img.jpg', img = original)
   image = Image.open('img.jpg')
   prediction = import_and_predict(image, model)
-  
   if np.argmax(prediction) == 0:
     predict = "onion"
   elif np.argmax(prediction) == 1:
     predict = "orange"
   else:
-    with open('data/unknown_count.txt', 'r') as file:
-      count = file.read()
-    Path("img.jpg").rename("data/unknown/" + count + ".jpg")
-    test = int(count) + 1
-    with open('data/unknown_count.txt', 'w') as file:
-      file.write(str(test))
+    # with open('data/unknown_count.txt', 'r') as file:
+    #   count = file.read()
+    # Path("img.jpg").rename("data/unknown/" + count + ".jpg")
+    # test = int(count) + 1
+    # with open('data/unknown_count.txt', 'w') as file:
+    #   file.write(str(test))
     predict = "unknown"
-  testing = str(prediction)
   cv2.putText(
     original, predict, (10, 30),
     cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
   cv2.putText(
-    original, testing, (10, 60),
+    original, str(prediction), (10, 60),
     cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-  cv2.imshow("Classification", original)
+  cv2.imshow("Detector", original)
 
   if (cv2.waitKey(1) & 0xFF == ord('q')):
     break
