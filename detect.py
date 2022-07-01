@@ -35,12 +35,12 @@ while (True):
   elif np.argmax(prediction) == 1:
     predict = "orange"
   else:
-    # with open('data/unknown_count.txt', 'r') as file:
-    #   count = file.read()
-    # Path("img.jpg").rename("data/unknown/" + count + ".jpg")
-    # test = int(count) + 1
-    # with open('data/unknown_count.txt', 'w') as file:
-    #   file.write(str(test))
+  # with open('data/unknown_count.txt', 'r') as file:
+  #   count = file.read()
+  # Path("img.jpg").rename("data/unknown/" + count + ".jpg")
+  # test = int(count) + 1
+  # with open('data/unknown_count.txt', 'w') as file:
+  #   file.write(str(test))
     predict = "unknown"
   cv2.putText(
     original, predict, (10, 30),
