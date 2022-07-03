@@ -1,4 +1,4 @@
-import cv2, sys, time
+import cv2, sys, time, os
 import tensorflow as tf
 import numpy as np
 from pathlib import Path
@@ -38,16 +38,12 @@ if (type == 1):
     cv2.putText(
       original, predict, (10, 30),
       cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
-    cv2.putText(
-      original, str(prediction), (10, 60),
-      cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
     cv2.imshow("Live Detection", original)
     if (cv2.waitKey(1) & 0xFF == ord('q')):
       break
   cap.release()
   frame = None
   cv2.destroyAllWindows()
-  sys.exit()
 elif (type == 2):
   prediction = import_and_predict(Image.open("data/test.jpg"), model)
   if np.argmax(prediction) == 0:
@@ -61,7 +57,7 @@ elif (type == 3):
   print("Type:\n1. Onion\n2. Orange\n3. Unknown")
   obj = int(input())
   while (True):
-    time.sleep(0.1)
+    time.sleep(0.005)
     if (obj == 1):
       obj_name = "onion"
       index = 0
@@ -88,4 +84,5 @@ elif (type == 3):
   cap.release()
   frame = None
   cv2.destroyAllWindows()
-  sys.exit()
+os.remove("data/img.jpg")
+sys.exit()
